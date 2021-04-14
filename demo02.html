@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    #app{
+        background-color: antiquewhite;
+        width: auto;
+        height: auto;
+    }
+</style>
+<body>
+    <div id='app'>
+        <canvas id="canvas"/>
+    </div>
+
+
+<script>
+    //getElementById() 来访问 canvas 元素
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    canvas.width=800;
+    canvas.height=400;
+
+    const gradient = context.createLinearGradient(0, 0, canvas.width,canvas.height);
+    gradient.addColorStop(0  ,"rgb(100,200,155)")
+    gradient.addColorStop(0.8,"rgb(200,120,155)")
+    gradient.addColorStop(1.0,"rgb(00,120,105)")
+    context.strokeStyle = gradient
+    // context.fillRect(0,0,canvas.width,canvas.height);
+
+    //平移
+    // context.translate(canvas.width/2,canvas.height/2);
+
+    //旋转画布
+    // context.rotate(Math.PI/180*10)
+
+    //坐标系方向调整
+    //具体是沿X，Y轴镜像的选择
+    context.scale(1,-1);
+    //平移
+    context.translate(0,-canvas.height);
+
+    //绘制X轴
+    context.beginPath();
+    context.moveTo(0,0);
+    context.lineTo(canvas.width,0)
+    context.closePath();
+    context.stroke();
+
+    //绘制Y轴
+    context.beginPath();
+    context.moveTo(0,0);
+    context.lineTo(0,canvas.height)
+    context.closePath();
+    context.stroke();
+
+    //斜线
+    context.beginPath();
+    context.moveTo(0,0);
+    context.lineTo(canvas.width,canvas.height)
+    context.closePath();
+    context.stroke();
+
+    context.beginPath()
+    //绘制在圆心绘制圆圈
+    context.arc(0, 0, 50, 0, Math.PI * 2, true);
+    context.closePath()
+    //画不是闭合区域 fill是闭合区域
+    context.fillStyle = gradient
+    context.fill()
+    
+
+</script>
+</body>
+</html>

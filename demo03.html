@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chart</title>
+</head>
+<body>
+    <canvas id="chart"></canvas>
+</body>
+<script type="text/javascript">
+// https://segmentfault.com/a/1190000019908139
+    let r = 100,     //半径
+        cx = 0,         //圆心位置
+        cy = 0,
+        parts = [     //彩条
+            '#78C77C','#F3D263','#FC9136','#FB574A','#AE1A51','#8F66DD'
+        ], 
+        texts = [     //文字段落
+            0,35,75,115,130,250
+        ],
+        pad = 1/100, //间隙
+        data = 0.7  //数据，百分比，20%应写成0.2
+
+    let canvas = document.getElementById('chart')
+    canvas.width = 262;
+    canvas.height = 262;
+    let ctx = canvas.getContext('2d')
+    ctx.translate(canvas.width/2,canvas.height/2);
+    ctx.save()
+    ctx.rotate(0.5*Math.PI)
+
+    //最大的外圈
+    ctx.beginPath()
+    ctx.arc(cx,cy,r+30,0,2*Math.PI)
+    ctx.fillStyle="#fff"
+    ctx.strokeStyle="gray"
+
+    ctx.shadowOffsetX = 0; // 阴影Y轴偏移
+    ctx.shadowOffsetY = 0; // 阴影X轴偏移
+    ctx.shadowBlur = 1; // 模糊尺寸
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)'; // 颜色
+    ctx.stroke();
+    ctx.fill();
+
+    //内二圈
+    ctx.beginPath()
+    ctx.arc(cx,cy,r-20,0,2*Math.PI)
+    ctx.fillStyle="#F2F1F3"
+    ctx.fill();
+
+
+
+    //内圈
+    ctx.beginPath()
+    ctx.arc(cx,cy,r-20-30,0,2*Math.PI)
+    ctx.fillStyle="#fff"
+    ctx.strokeStyle="#fff"
+    ctx.stroke();
+    ctx.fill();
+    
+
+    // 彩圈
+    let startRad = 0
+    let partRad = ( 2 - (pad*parts.length) ) / parts.length
+    parts.forEach((color,index)=>{
+        if (index===0) {
+            startRad += pad/2
+        } else {
+            startRad += pad + partRad
+        }
+        
+        ctx.beginPath()
+        ctx.strokeStyle = color
+        ctx.lineWidth = 20
+        ctx.arc(cx,cy,r,startRad * Math.PI,(startRad+partRad)*Math.PI)
+        ctx.stroke()
+    })
+    ctx.restore();
+
+    //指针
+    ctx.save();
+    ctx.rotate(data*2*Math.PI)    
+    ctx.beginPath()
+    ctx.moveTo(-6,0)
+    ctx.lineTo(0,r-30)
+    ctx.lineTo(6,0)
+    ctx.closePath();
+    ctx.fillStyle = '#4394F8';
+    ctx.fill();
+    ctx.beginPath()
+    ctx.arc(0,0,10,0,2*Math.PI)
+    ctx.fillStyle = '#F4F6F9';
+    ctx.strokeStyle = 'gray'
+    ctx.strokeWidth = 1
+    ctx.shadowOffsetX = 0; // 阴影Y轴偏移
+    ctx.shadowOffsetY = 0; // 阴影X轴偏移
+    ctx.shadowBlur = 10; // 模糊尺寸
+    ctx.shadowColor = '#F4F6F9'; // 颜色
+    ctx.stroke()
+    ctx.fill();
+    ctx.restore();
+
+    // 文字
+    ctx.save()
+    ctx.rotate(0.5*Math.PI)
+    let beginRotate = 0,
+        textPartRad = 2/(texts.length)
+    texts.forEach((text,index)=>{
+        if (index!=0) {
+            beginRotate = beginRotate + textPartRad
+        }
+        ctx.save();
+        ctx.beginPath()
+        ctx.font = "15px"
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.translate(cx+Math.cos(beginRotate*Math.PI)*(r-35),cy+Math.sin(beginRotate*Math.PI)*(r-35));
+        ctx.rotate(beginRotate*Math.PI+(-0.5*Math.PI))
+        ctx.rotate(Math.PI)
+        ctx.fillText(text,0,0)
+        ctx.restore();
+    })
+    ctx.restore();
+    
+    
+
+
+</script>
+</html>

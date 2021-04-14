@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas"/>
+
+<script>
+    // 手写一个简易图表坐标系
+    //getElementById() 来访问 canvas 元素
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    canvas.width=1000;
+    canvas.height=2000;
+
+    const gradient = context.createLinearGradient(0, 0, canvas.width,canvas.height);
+    gradient.addColorStop(0  ,"rgb(100,200,155)")
+    gradient.addColorStop(0.5,"rgb(200,120,155)")
+    gradient.addColorStop(1.0,"rgb(200,220,255)")
+    context.fillStyle = gradient
+    context.fillRect(0,0,canvas.width,canvas.height);
+    
+</script>
+</body>
+</html>
